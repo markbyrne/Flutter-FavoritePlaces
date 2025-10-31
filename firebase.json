@@ -1,0 +1,45 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "favorite-places-rugburn",
+          "appId": "1:1008356355711:android:92836771b0273630dd594a",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "favorite-places-rugburn",
+          "appId": "1:1008356355711:ios:1aa4a2709bdd1682dd594a",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "favorite-places-rugburn",
+          "configurations": {
+            "android": "1:1008356355711:android:92836771b0273630dd594a",
+            "ios": "1:1008356355711:ios:1aa4a2709bdd1682dd594a",
+            "web": "1:1008356355711:web:84ebb5c0c7e480f6dd594a"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "codebase": "default",
+      "disallowLegacyRuntimeConfig": true,
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "source": "functions"
+    }
+  ]
+}
