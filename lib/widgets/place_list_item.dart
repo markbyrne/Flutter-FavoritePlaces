@@ -101,6 +101,7 @@ class PlaceListItem extends StatelessWidget {
         _deleteItem();
       },
       child: ListTile(
+        leading: CircleAvatar(radius: 26, backgroundImage: NetworkImage(place.imageUrl),),
         title: Text(place.name),
         onTap: () {
           Navigator.of(context).push(

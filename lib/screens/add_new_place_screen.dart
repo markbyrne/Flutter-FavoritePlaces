@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:favorite_places/widgets/location_input.dart';
 import 'package:favorite_places/widgets/user_image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -21,9 +22,9 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final UserImagePickerController _userImagePickerController =
       UserImagePickerController();
+  final LocationInputController _locationInputController = LocationInputController();
   String _locationName = '';
   XFile? _locationImage;
-  bool _locationImageError = false;
   bool _isUploading = false;
 
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -92,9 +93,7 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
 
     if (_locationImage == null) {
       isValid = false;
-      setState(() {
-        _locationImageError = true;
-      });
+      _userImagePickerController.showError('Please add a valid image of this location.');
     }
 
     if (!isValid) {
@@ -182,6 +181,8 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
     Navigator.of(context).pop();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -202,21 +203,10 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
                     controller: _userImagePickerController,
                     onPickedImage: (file) {
                       _locationImage = file;
-                      setState(() {
-                        _locationImageError = false;
-                      });
                     },
                   ),
-                  if (_locationImageError)
-                    Container(
-                      margin: EdgeInsets.only(top: 8, bottom: 4),
-                      child: Text(
-                        'Please add a valid image of this location.',
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                      ),
-                    ),
+                  SizedBox(height: 10),
+                  LocationInput(controller: _locationInputController),
                   TextFormField(
                     autocorrect: true,
                     decoration: const InputDecoration(
@@ -248,9 +238,7 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
                             : () {
                                 _formKey.currentState!.reset();
                                 _locationImage == null;
-                                setState(() {
-                                  _locationImageError = false;
-                                });
+                                _userImagePickerController.clearError();
                                 _userImagePickerController.clearImage();
                               },
                         child: Text(

@@ -13,6 +13,14 @@ class UserImagePickerController {
   void clearImage() {
     _state?.clearImage();
   }
+
+  void showError(String msg){
+    _state?.showError(msg);
+  }
+
+  void clearError(){
+    _state?.clearError();
+  }
 }
 
 class UserImagePicker extends StatefulWidget {
@@ -30,6 +38,7 @@ class UserImagePicker extends StatefulWidget {
 
 class _UserImagePickerState extends State<UserImagePicker> {
   XFile? _pickedImageFile;
+  String? _errorMsg;
 
   @override
   void initState() {
@@ -47,6 +56,16 @@ class _UserImagePickerState extends State<UserImagePicker> {
     setState(() {
       _pickedImageFile = null;
     });
+  }
+
+  void clearError(){
+    setState(() {
+      _errorMsg = null;
+    });
+  }
+
+  void showError(String msg){
+    _errorMsg = msg;
   }
 
   Future<ImageSource?> _pickImageSource() {
@@ -119,46 +138,64 @@ class _UserImagePickerState extends State<UserImagePicker> {
     setState(() {
       _pickedImageFile = pickedImage;
     });
+    clearError();
+
     widget.onPickedImage(_pickedImageFile!);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          width: 1,
-          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 1,
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.2),
+            ),
+          ),
+          height: 250,
+          width: double.infinity,
+          alignment: Alignment.center,
+          child: _pickedImageFile == null
+              ? TextButton.icon(
+                  onPressed: _pickImage,
+                  label: const Text('Add Picture'),
+                  icon: const Icon(Icons.camera),
+                )
+              : kIsWeb
+              ? GestureDetector(
+                  onTap: _pickImage,
+                  child: Image.network(
+                    _pickedImageFile!.path,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+                )
+              : GestureDetector(
+                  onTap: _pickImage,
+                  child: Image.file(
+                    File(_pickedImageFile!.path),
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+                ),
         ),
-      ),
-      height: 250,
-      width: double.infinity,
-      alignment: Alignment.center,
-      child: _pickedImageFile == null
-          ? TextButton.icon(
-              onPressed: _pickImage,
-              label: const Text('Add Picture'),
-              icon: const Icon(Icons.camera),
-            )
-          : kIsWeb
-          ? GestureDetector(
-              onTap: _pickImage,
-              child: Image.network(
-                _pickedImageFile!.path,
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
-              ),
-            )
-          : GestureDetector(
-              onTap: _pickImage,
-              child: Image.file(
-                File(_pickedImageFile!.path),
-                fit: BoxFit.cover,
-                width: double.infinity,
-                height: double.infinity,
+        if (_errorMsg != null)
+          Container(
+            margin: EdgeInsets.only(top: 8, bottom: 4),
+            child: Text(
+              _errorMsg!,
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Theme.of(context).colorScheme.error,
               ),
             ),
+          ),
+      ],
     );
   }
 }
