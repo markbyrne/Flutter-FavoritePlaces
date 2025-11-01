@@ -8,7 +8,7 @@ class Place {
   final String imagePath;
 
   const Place({required this.id, required this.name, required this.dateAdded, required this.imageUrl, required this.imagePath});
-  Place.fromMap(map): id = map.id, name = map['name'], dateAdded = map['dateAdded'].toDate(), imageUrl = map['imageUrl'], imagePath=map['imagePath'];
+  Place.fromMap(map): id = map.id, name = map['name'], dateAdded = (map['dateAdded'] as Timestamp).toDate(), imageUrl = map['imageUrl'], imagePath=map['imagePath'];
 
   Map<String,dynamic> get toMap {
     return {
