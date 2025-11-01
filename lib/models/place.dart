@@ -6,6 +6,7 @@ class Place {
   final DateTime dateAdded;
   final String imageUrl;
   final String imagePath;
+  // final 
 
   const Place({required this.id, required this.name, required this.dateAdded, required this.imageUrl, required this.imagePath});
   Place.fromMap(map): id = map.id, name = map['name'], dateAdded = (map['dateAdded'] as Timestamp).toDate(), imageUrl = map['imageUrl'], imagePath=map['imagePath'];
