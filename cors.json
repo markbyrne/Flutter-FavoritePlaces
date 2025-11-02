@@ -1,0 +1,7 @@
+[
+  {
+    "origin": ["https://favorite-places-rugburn.web.app", "https://favorite-places-rugburn.firebaseapp.com"],
+    "method": ["GET", "HEAD", "PUT", "POST", "DELETE"],
+    "maxAgeSeconds": 3600
+  }
+]
