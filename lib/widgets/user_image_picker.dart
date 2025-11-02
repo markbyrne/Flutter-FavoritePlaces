@@ -21,14 +21,21 @@ class UserImagePickerController {
   void clearError(){
     _state?.clearError();
   }
+
+  void reset(){
+    _state?.clearImage();
+    _state?.clearError();
+  }
+
+  XFile? get selectedImage {
+    return _state?.selectedImage;
+  }
 }
 
 class UserImagePicker extends StatefulWidget {
-  final void Function(XFile) onPickedImage;
   final UserImagePickerController controller;
   const UserImagePicker({
     super.key,
-    required this.onPickedImage,
     required this.controller,
   });
 
@@ -65,7 +72,13 @@ class _UserImagePickerState extends State<UserImagePicker> {
   }
 
   void showError(String msg){
-    _errorMsg = msg;
+    setState(() {
+      _errorMsg = msg;
+    });
+  }
+
+  XFile? get selectedImage {
+    return _pickedImageFile;
   }
 
   Future<ImageSource?> _pickImageSource() {
@@ -139,8 +152,6 @@ class _UserImagePickerState extends State<UserImagePicker> {
       _pickedImageFile = pickedImage;
     });
     clearError();
-
-    widget.onPickedImage(_pickedImageFile!);
   }
 
   @override

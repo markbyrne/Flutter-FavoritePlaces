@@ -22,9 +22,9 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final UserImagePickerController _userImagePickerController =
       UserImagePickerController();
-  final LocationInputController _locationInputController = LocationInputController();
+  final LocationInputController _locationInputController =
+      LocationInputController();
   String _locationName = '';
-  XFile? _locationImage;
   bool _isUploading = false;
 
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -57,10 +57,7 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
       UploadTask uploadTask;
       if (kIsWeb) {
         final bytes = await imageFile.readAsBytes();
-        uploadTask = ref.putData(
-          bytes,
-          metadata,
-        );
+        uploadTask = ref.putData(bytes, metadata);
       } else {
         uploadTask = ref.putFile(File(imageFile.path), metadata);
       }
@@ -73,7 +70,7 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
         name: 'AddNewPlaceScreen:uploadImage',
       );
 
-      return {'imageUrl': downloadUrl, 'imagePath': ref.fullPath} ;
+      return {'imageUrl': downloadUrl, 'imagePath': ref.fullPath};
     } catch (e) {
       dev.log(
         'Unable to upload image.',
@@ -88,12 +85,22 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
     setState(() {
       _isUploading = true;
     });
-
+    final pickedLocation = _locationInputController.pickedLocation;
+    final locationImage = _userImagePickerController.selectedImage;
     bool isValid = _formKey.currentState!.validate();
 
-    if (_locationImage == null) {
+    if (locationImage == null) {
       isValid = false;
-      _userImagePickerController.showError('Please add a valid image of this location.');
+      _userImagePickerController.showError(
+        'Please add a valid image of this location.',
+      );
+    }
+
+    if (pickedLocation == null) {
+      isValid = false;
+      _locationInputController.showError(
+        'Please add a valid location.',
+      );
     }
 
     if (!isValid) {
@@ -107,7 +114,7 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
 
     if (!mounted) return;
 
-    Map<String,String>? storageData = await uploadImage(_locationImage!);
+    Map<String, String>? storageData = await uploadImage(locationImage!);
     if (storageData == null) {
       setState(() {
         _isUploading = false;
@@ -135,6 +142,7 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
             'dateAdded': FieldValue.serverTimestamp(),
             'imageUrl': storageData['imageUrl'],
             'imagePath': storageData['imagePath'],
+            'location': pickedLocation!.toMap,
           })
           .timeout(
             Duration(seconds: 10),
@@ -181,8 +189,6 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
     Navigator.of(context).pop();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -199,12 +205,7 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  UserImagePicker(
-                    controller: _userImagePickerController,
-                    onPickedImage: (file) {
-                      _locationImage = file;
-                    },
-                  ),
+                  UserImagePicker(controller: _userImagePickerController),
                   SizedBox(height: 10),
                   LocationInput(controller: _locationInputController),
                   TextFormField(
@@ -237,9 +238,8 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
                             ? null
                             : () {
                                 _formKey.currentState!.reset();
-                                _locationImage == null;
-                                _userImagePickerController.clearError();
-                                _userImagePickerController.clearImage();
+                                _userImagePickerController.reset();
+                                _locationInputController.reset();
                               },
                         child: Text(
                           'Clear',

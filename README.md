@@ -1,16 +1,27 @@
-# FLutter Favorite Places App
+# Flutter Favorite Places App
 
 A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+To run this project, you must create your own secrets.dart file in the lib folder and add the key you create [here](https://console.cloud.google.com/google/maps-apis/)
 
-A few resources to get you started if this is your first Flutter project:
+Example file:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+class Secrets {
+  static const googleMapAPIKey = 'YOUR-API-KEY';
+}
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+You will also need to run through the [Firebase Setup](https://firebase.google.com/docs/flutter/setup?platform=ios) to configure your own Backend and related API keys for firebase.
+
+## Skills
+- **Native Device Features** leveraging device camera/gallery, and location services.
+- **Firebase** for demo hosting, user **authentication**, image and data **backend storage**, and **Firebase Functions** for backend cleanup of orphaned images.
+- **Google Maps API** to select and display a location.
+- Other basic Flutter skills to include:
+    - State Management
+    - Page Navigation
+    - Modal Views
+    - Snackbar Alerts
+    - Dismissible List Items
+    - UI Themes
