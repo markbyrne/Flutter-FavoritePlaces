@@ -184,8 +184,10 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
       return;
     }
 
-    if (!mounted) return;
+    // give server time to set timestamp
+    await Future.delayed(Durations.extralong1);
 
+    if (!mounted) return;
     Navigator.of(context).pop();
   }
 
@@ -205,9 +207,6 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  UserImagePicker(controller: _userImagePickerController),
-                  SizedBox(height: 10),
-                  LocationInput(controller: _locationInputController),
                   TextFormField(
                     autocorrect: true,
                     decoration: const InputDecoration(
@@ -229,6 +228,10 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
+                  SizedBox(height: 10),
+                  UserImagePicker(controller: _userImagePickerController),
+                  SizedBox(height: 10),
+                  LocationInput(controller: _locationInputController),
                   SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,

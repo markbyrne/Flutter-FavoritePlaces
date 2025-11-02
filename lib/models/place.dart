@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:favorite_places/secrets.dart';
 import 'package:uuid/uuid.dart';
 
 const uuid = Uuid();
@@ -8,7 +9,7 @@ class PlaceLocation {
   final double latitude;
   final double longitude;
 
-  PlaceLocation({
+  const PlaceLocation({
     required this.address,
     required this.latitude,
     required this.longitude,
@@ -20,6 +21,10 @@ class PlaceLocation {
 
   Map<String, dynamic> get toMap {
     return {'address': address, 'latitude': latitude, 'longitude': longitude};
+  }
+
+  String get locationImage {
+    return 'https://maps.googleapis.com/maps/api/staticmap?center=$latitude,$longitude&zoom=16&size=600x300&markers=color:blue%7Clabel:%7C$latitude,$longitude&key=${Secrets.googleMapAPIKey}';
   }
 }
 

@@ -12,6 +12,7 @@
 .swiftpm/
 migrate_working_dir/
 **/secrets.dart
+**/Secrets.plist
 
 # IntelliJ related
 *.iml

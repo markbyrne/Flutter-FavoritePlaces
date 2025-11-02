@@ -104,6 +104,7 @@ class PlaceListItem extends StatelessWidget {
         contentPadding: EdgeInsets.all(6),
         leading: CircleAvatar(radius: 26, backgroundImage: NetworkImage(place.imageUrl),),
         title: Text(place.name),
+        subtitle: Text(place.location.address),
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute<void>(

@@ -11,7 +11,6 @@ A full-featured Flutter mobile application that allows users to capture, save, a
 - **User Authentication**: Secure email/password authentication with email verification flow
 - **Real-time Data Sync**: Instant synchronization of places across devices using Firebase Firestore
 - **Dismissible List Items**: Swipe-to-delete functionality with undo capability
-- **Offline Persistence**: Local data caching for seamless offline access
 
 ### User Experience
 - **Responsive Form Validation**: Real-time input validation with helpful error messages
@@ -83,8 +82,28 @@ A full-featured Flutter mobile application that allows users to capture, save, a
 
 ```dart
 class Secrets {
-  static const googleMapAPIKey = 'YOUR-API-KEY-HERE';
+  static const googleMapAPIKey = 'YOUR-API-KEY';
 }
+```
+
+You will also need to follow the [setup instructions](https://pub.dev/packages/google_maps_flutter) for the google_maps_flutter package.
+You will need to add your API key to android/local.properties, and ios/Runner/Secrets.plist
+
+```
+# android/local.properties
+googleMapsApiKey=YOUR-API-KEY
+```
+
+```
+# ios/Runner/Secrets.plist
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>GoogleMapsAPIKey</key>
+    <string>YOUR-API-KEY</string>
+</dict>
+</plist>
 ```
 
 ### 2. Firebase Configuration
@@ -176,6 +195,7 @@ Key packages used in this project:
 - `google_fonts` - Custom typography
 - `http` - API requests
 - `uuid` - Unique identifier generation
+- `google_maps_flutter`
 
 ## Future Enhancements
 
